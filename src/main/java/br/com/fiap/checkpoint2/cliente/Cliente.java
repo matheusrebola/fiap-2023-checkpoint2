@@ -18,11 +18,27 @@ public class Cliente {
     private String nome;
     private String inscricao_federal;
     private String cep;
+    private Boolean ativo;
 
     public Cliente(DadosCadastroCliente dados) {
         this.nome = dados.nome();
         this.inscricao_federal = dados.inscricao_federal();
         this.cep = dados.cep();
+        this.ativo = true;
+    }
+    public void atualizarInformacoes(DadosAtualizacaoCliente dados) {
+        if (dados.nome() != null) {
+            this.nome = dados.nome();
+        }
+        if (dados.inscricao_federal() != null) {
+            this.inscricao_federal = dados.inscricao_federal();
+        }
+        if (dados.cep() != null) {
+            this.cep = dados.cep();
+        }
     }
 
+    public void excluir() {
+        this.ativo = false;
+    }
 }

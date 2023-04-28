@@ -1,16 +1,13 @@
 package br.com.fiap.checkpoint2.controller;
 
-import br.com.fiap.checkpoint2.cliente.Cliente;
-import br.com.fiap.checkpoint2.cliente.DadosAtualizacaoCliente;
-import br.com.fiap.checkpoint2.cliente.DadosListagemCliente;
-import br.com.fiap.checkpoint2.pedido.DadosCadastroPedido;
-import br.com.fiap.checkpoint2.pedido.PedidoRepository;
+import br.com.fiap.checkpoint2.pedido.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("pedidos")
@@ -21,22 +18,22 @@ public class PedidoController {
 
     @PostMapping
     public void cadastrar (@RequestBody DadosCadastroPedido dados){
-        repository.save(new Cliente(dados));
+        repository.save(new Pedido(dados));
     }
     @GetMapping
-    public Page<DadosListagemCliente> listar(@PageableDefault(size = 10, sort = {"codigo_produto"}) Pageable paginacao) {
-        return repository.findAll(paginacao).map(DadosListagemCliente::new);
+    public Page<DadosListagemPedido> listar(@PageableDefault(size = 10, sort = {"codigo_produto"}) Pageable paginacao) {
+        return repository.findAll(paginacao).map(DadosListagemPedido::new);
     }
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody @Valid DadosAtualizacaoCliente dados) {
-        var cliente = repository.getReferenceById(dados.codigo_produto());
-        cliente.atualizarInformacoes(dados);
+    public void atualizar(@RequestBody @Valid DadosAtualizacaoPedido dados) {
+        var pedido = repository.getReferenceById(dados.numero_pedido());
+        pedido.atualizarInformacoes(dados);
     }
-    @DeleteMapping("/{codigo_produto}")
+    @DeleteMapping("/{numero_pedido}")
     @Transactional
-    public void excluir(@PathVariable Long codigo_produto) {
-        var cliente = repository.getReferenceById(codigo_produto);
+    public void excluir(@PathVariable Long numero_pedido) {
+        var cliente = repository.getReferenceById(numero_pedido);
         cliente.excluir();
     }
 }

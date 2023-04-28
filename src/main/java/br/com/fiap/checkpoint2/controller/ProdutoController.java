@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("produtos")
@@ -19,19 +20,19 @@ public class ProdutoController {
         repository.save(new Produto(dados));
     }
     @GetMapping
-    public Page<DadosListagemProduto> listar(@PageableDefault(size = 10, sort = {"numero_pedido"}) Pageable paginacao) {
+    public Page<DadosListagemProduto> listar(@PageableDefault(size = 10, sort = {"codigo_produto"}) Pageable paginacao) {
         return repository.findAll(paginacao).map(DadosListagemProduto::new);
     }
     @PutMapping
     @Transactional
     public void atualizar(@RequestBody @Valid DadosAtualizacaoProduto dados) {
-        var cliente = repository.getReferenceById(dados.codigo_cliente());
-        cliente.atualizarInformacoes(dados);
+        var produto = repository.getReferenceById(dados.codigo_produto());
+        produto.atualizarInformacoes(dados);
     }
-    @DeleteMapping("/{numero_pedido}")
+    @DeleteMapping("/{codigo_produto}")
     @Transactional
-    public void excluir(@PathVariable Long numero_pedido) {
-        var cliente = repository.getReferenceById(numero_pedido);
+    public void excluir(@PathVariable Long codigo_produto) {
+        var cliente = repository.getReferenceById(codigo_produto);
         cliente.excluir();
     }
 }
