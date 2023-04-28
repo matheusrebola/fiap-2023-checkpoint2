@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemPedidoRepository extends JpaRepository  <ItemPedido, Long> {
-    Page<ItemPedido> findAllByAtivoTrue(Pageable paginacao);
+    Page<ItemPedido> findAll(Pageable paginacao);
 }
